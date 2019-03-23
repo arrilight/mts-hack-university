@@ -63,8 +63,6 @@ def handle_dialog(req, res):
         sessionStorage1 = pickle.load(f)
         result = {}
 
-        print(req['request']['original_utterance'].lower())
-
         if req['request']['original_utterance'].lower() in ['собрать тариф']:
             pb = plan_builder.PlanBuilder()
             result = pb.process_step()
@@ -81,7 +79,7 @@ def handle_dialog(req, res):
             result = pb.process_step(req['request'])
 
         res['response']['text'] = result['title']
-        res['response']['buttons'] = result['suggests']
+        res['response']['buttons'] = get_suggests(result['suggests'])
         result['init'] = result['newstate']
         sessionStorage1['flow_step'] = result
 
@@ -91,13 +89,12 @@ def handle_dialog(req, res):
         return
 
 
-def get_suggests(session_id):
-    session = sessionStorage[session_id]
+def get_suggests(session_raw):
 
     # Выбираем две первые подсказки из массива.
     suggests = [
         {'title': suggest, 'hide': True}
-        for suggest in session['suggests']
+        for suggest in session_raw
     ]
 
     # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
