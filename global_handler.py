@@ -1,5 +1,6 @@
 import pickle
 
+from TopUper import TopUper
 from plan_builder import PlanBuilder
 
 
@@ -28,6 +29,9 @@ class GlobalHandler:
         if 'тариф' in tokens:
             self.session_storage['current_subflow'] = 'plan_builder'
             program = PlanBuilder()
+        if 'пополнить' in tokens:
+            self.session_storage['current_subflow'] = 'top_up'
+            program = TopUper()
         # вся оставшаяся логика по рекогнишену будет тут
         result = program.process_step()
         res['response']['text'] = result['title']
@@ -42,9 +46,8 @@ class GlobalHandler:
         if name == 'plan_builder':
             program = PlanBuilder(state)
 
-
         if name == 'top_up':
-            ...
+            program = TopUper(state)
         if name == 'music':
             ...
 
