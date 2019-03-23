@@ -112,67 +112,29 @@ flow = {
         }
     },
     "authorization": {
-        "init": "sms_input",
+        "init": "number_validation",
         "title": 'Привет! Я твой новый помощник в мире МТС! Чтобы мы могли свободно общаться, '
                  'я должен знать что ты это ты. Для этого введи свой номер телефона)',
         'suggests': [],
         "state": {
-            "sms_input": {
+            "number_validation": {
                 "events": {
                     "next": {
-                        "newstate": "sms_check_success",
+                        "newstate": "sms_input",
                         "title": "Тебе пришло смс с несколькими словами. Прочитай их и я буду уверен, что это ты)",
                         'suggests': []
                     }
                 }
             },
-            "sms_check_success": {
+            "sms_input": {
                 "events": {
                     "fail": {
-                        "newstate": "sms_check_fail",
-                        "title": "Неправильный ввод(",
-                        'suggests': [
-                            "Попробовать снова",
-                            "Новый смс"
-                        ]
-                    },
-                    "next": {
-                        "newstate": "end",
-                        "title": "Отлично, теперь я могу тебе доверять! Что бы ты хотел?",
-                        'suggests': [
-                            "Собрать тариф",
-                            "Пополнить счет",
-                            "Все что вы хотите!",
-                        ]
+                        "newstate": "number_validation",
+                        "title": "Попробуй ввести номер еще раз",
+                        'suggests': []
                     }
                 }
-            },
-            "sms_check_fail": {
-                "events": {
-                    "success": {
-                        "newstate": "end",
-                        "title": "Отлично, теперь я могу тебе доверять! Что бы ты хотел?",
-                        'suggests': [
-                            "Собрать тариф",
-                            "Пополнить счет",
-                            "Все что вы хотите!",
-                        ]
-                    },
-                    "next": {
-                        "newstate": "sms_check_fail",
-                        "title": "Неправильный ввод(",
-                        'suggests': [
-                            "Попробовать снова",
-                            "Новый смс"
-                        ]
-                    },
-                }
-            },
-            "end": {
-                "events": {
-                }
             }
-
         }
     }
 
