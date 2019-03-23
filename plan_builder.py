@@ -153,7 +153,7 @@ class PlanBuilder:
             return
 
         self.current_state = self.current_state
-        self.title = "Я не совсем поняла. Ответьте да или нет."
+        self.title = "Я не совсем поняла. Ответь да или нет."
         self.suggests = self.suggests
 
 

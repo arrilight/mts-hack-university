@@ -44,7 +44,7 @@ class GlobalHandler:
             program = TopUper()
         if len(stemmed_tokens.intersection(music_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'handle_music'
-            program = TopUper()
+            program = MusicHandler()
         if program is None:
             self.generate_response(res, 'Я вас не поняла. Попытайтесь объясниться по-другому.')
             return
@@ -63,10 +63,9 @@ class GlobalHandler:
         state = self.session_storage['flow_state']
         if name == 'plan_builder':
             program = PlanBuilder(state)
-
         if name == 'top_up':
             program = TopUper(state)
-        if name == 'music':
+        if name == 'handle_music':
             program = MusicHandler(state)
 
         result = program.process_step(req)

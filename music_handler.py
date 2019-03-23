@@ -34,7 +34,7 @@ class MusicHandler:
 
         if response == 'Добавить':
             new_flow = self.flow["state"]['add_music']['events']['next']
-            self.current_state = new_flow["newstate"]
+            self.current_state = None
             self.title = new_flow["title"]
             self.suggests = new_flow["suggests"]
             return

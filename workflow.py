@@ -154,7 +154,7 @@ flow = {
                         'suggests': [
                             {"title": "Проиграть", "url": 'https://music.mts.ru/album/6252045/track/45203073?share=1'},
                             {"title": "Добавить"},
-                            {"Спасибо!"}
+                            {"title": "Спасибо!"}
                         ]
                     },
                 }
@@ -163,13 +163,13 @@ flow = {
                 "events": {
                     "next": {
                         "newstate": "finish",
-                        "title": "",
+                        "title": "Добавила песню в твою медиатеку.",
                         'suggests': []
                     },
                 }
             },
             "finish": {
-                "events": {}
+                "events": None,
             }
 
         }
