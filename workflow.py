@@ -64,6 +64,10 @@ flow = {
         "state": {
             "chose_to_who": {
                 "events": {
+                    "enter_other_number": {
+                        "newstate": "other_number",
+                        "title": "Какой номер пополнить?",
+                    },
                     "next": {
                         "newstate": "choose_amount",
                         "title": "Хорошо! На сколько рублей?",
@@ -83,16 +87,28 @@ flow = {
                         'suggests': [
                             "Моя карта МТС",
                             "Мой мобильный баланс",
-                            "Другая карта",
                         ]
                     }
                 }
             },
             "choose_source": {
                 "events": {
-                }
-            }
 
+                }
+            },
+            "other_number": {
+                "events": {
+                    "next": {
+                        "newstate": "choose_amount",
+                        "title": "Хорошо! На сколько рублей?",
+                        'suggests': [
+                            "50 рублей",
+                            "100 рублей",
+                            "500 рублей",
+                        ]
+                    }
+                }
+            },
         }
     },
     "authorization": {
