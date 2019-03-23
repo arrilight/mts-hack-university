@@ -63,8 +63,6 @@ def handle_dialog(req, res):
         sessionStorage1 = pickle.load(f)
         result = {}
 
-        print(req['request']['original_utterance'].lower())
-
         if req['request']['original_utterance'].lower() in ['собрать тариф']:
             pb = plan_builder.PlanBuilder()
             result = pb.process_step()

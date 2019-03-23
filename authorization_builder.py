@@ -1,12 +1,16 @@
 import workflow
+import requests
 
 
 class PlanBuilder:
-    def __init__(self, saved_state=workflow.flow["authorization"]):
+    def __init__(self, session_id, saved_state=workflow.flow["authorization"]):
         self.flow = workflow.flow["authorization"]
         self.current_state = saved_state["init"]
         self.title = saved_state["title"]
         self.suggests = saved_state["suggests"]
+        self.service_ip = 'http://localhost:5000/'
+        self.session_id = session_id
+        self.word_enter_attemps = 3
 
     def process_step(self, req=None):
         result = {}
@@ -17,10 +21,10 @@ class PlanBuilder:
         result["newstate"] = self.current_state
         return result
 
-    def choose_minutes(self, req):
+    def number_validation(self, req):
+        is_valid_number = (req['command'][0:1] == '+7' or req['command'][0] == '8') and len(req['command'])
 
-
-        if minutes is None:
+        if not is_valid_number:
             self.current_state = self.current_state
             self.title = "Номер не валиден( Попробуй ввести другой"
             self.suggests = self.suggests
@@ -31,103 +35,27 @@ class PlanBuilder:
         self.current_state = new_flow["newstate"]
         self.title = new_flow["title"]
         self.suggests = new_flow["suggests"]
+        requests.post(self.service_ip + '/sms_send', data={'session_id': self.session_id})
 
-    def choose_data(self, req):
-        entities = req["nlu"]["entities"]
-        minutes = None
-        for entity in entities:
-            if entity["type"] == "YANDEX.NUMBER":
-                minutes = entity["value"]
+    def sms_input(self, req):
+        words = req['nlu']['tokens']
+        r = requests.post(self.service_ip + '/sms_check', data={'session_id': self.session_id, 'words': words})
+        self.word_enter_attemps -= 1
 
-        # number wasn't recognised
-        if minutes is None:
+        if self.word_enter_attemps == 0:
+            self.word_enter_attemps = 3
+            new_flow = self.flow["state"][self.current_state]["events"]["fail"]
+            self.current_state = new_flow["newstate"]
+            self.title = new_flow["title"]
+            self.suggests = new_flow["suggests"]
+            return
+
+        if r.status_code != 200:
             self.current_state = self.current_state
-            self.title = "Я не смогла понять сколько гигабайт интернета вам нужно, попробуйте еще раз"
+            self.title = "Неверный ввод"
             self.suggests = self.suggests
             return
 
-        if isinstance(minutes, type([])):
-            self.current_state = self.current_state
-            self.title = "Пожалуйста, назовите только одно число"
-            self.suggests = self.suggests
-            return
-
-        if isinstance(minutes, int) and minutes < 0:
-            self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть отрицательным"
-            self.suggests = self.suggests
-            return
-
-        if isinstance(minutes, int) and minutes > 10000:
-            self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть больше 10000"
-            self.suggests = self.suggests
-            return
-
-        # here we should add MTS logic
-        new_flow = self.flow["state"][self.current_state]["events"]["next"]
-        self.current_state = new_flow["newstate"]
-        self.title = new_flow["title"]
-        self.suggests = new_flow["suggests"]
-
-    def choose_sms(self, req):
-        entities = req["nlu"]["entities"]
-        minutes = None
-        for entity in entities:
-            if entity["type"] == "YANDEX.NUMBER":
-                minutes = entity["value"]
-
-        # number wasn't recognised
-        if minutes is None:
-            self.current_state = self.current_state
-            self.title = "Я не смогла понять сколько смс вам нужно, попробуйте еще раз"
-            self.suggests = self.suggests
-            return
-
-        if isinstance(minutes, type([])):
-            self.current_state = self.current_state
-            self.title = "Пожалуйста, назовите только одно число"
-            self.suggests = self.suggests
-            return
-
-        if isinstance(minutes, int) and minutes < 0:
-            self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть отрицательным"
-            self.suggests = self.suggests
-            return
-
-        if isinstance(minutes, int) and minutes > 10000:
-            self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть больше 10000"
-            self.suggests = self.suggests
-            return
-
-        # here we should add MTS logic
-        new_flow = self.flow["state"][self.current_state]["events"]["next"]
-        self.current_state = new_flow["newstate"]
-        self.title = new_flow["title"]
-        self.suggests = new_flow["suggests"]
-
-    def choose_tv(self, req):
-        tokens = req["nlu"]["tokens"]
-
-        # number wasn't recognised
-
-        if "да" in tokens:
-            # save positive response
-
-            self.current_state = None
-            self.title = "Ваш тариф создан!"
-            self.suggests = None
-            return
-
-        if "нет" in tokens:
-            # save negative response
-            self.current_state = None
-            self.title = "Ваш тариф создан!"
-            self.suggests = None
-            return
-
-        self.current_state = self.current_state
-        self.title = "Я не совсем поняла. Ответьте да или нет."
-        self.suggests = self.suggests
+        self.current_state = None
+        self.title = "Не знаю точно что написать"
+        self.suggests = None
