@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from flask import Flask, request
@@ -84,6 +85,4 @@ def get_suggests(user_id):
 
 
 if __name__ == "__main__":
-    context = ('cert.crt', 'key.key')
-    # app.run(host='0.0.0.0', port=80, ssl_context=context, threaded=True, debug=True)
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0')

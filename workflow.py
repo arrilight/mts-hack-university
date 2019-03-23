@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 flow = {
     "build_plan": {
-        "init": "chose_minutes",
-        "title": "Добро пожаловать в констурктор тарифа! Давайте создадим тариф специиально для вас! Скажите мне, "
+        "init": "choose_minutes",
+        "title": "Добро пожаловать в констурктор тарифа! Давайте создадим тариф специально для вас! Скажите мне, "
                  "сколько минут звонков в месяц вы хотите?",
         'suggests': [
             "100 минут",
@@ -22,7 +23,7 @@ flow = {
                     }
                 }
             },
-            "chose_data": {
+            "choose_data": {
                 "events": {
                     "next": {
                         "newstate": "choose_sms",
@@ -35,7 +36,7 @@ flow = {
                     }
                 }
             },
-            "chose_sms": {
+            "choose_sms": {
                 "events": {
                     "next": {
                         "newstate": "choose_tv",
@@ -47,7 +48,7 @@ flow = {
                     }
                 }
             },
-            "chose_tv": {
+            "choose_tv": {
                 "events": {
                 }
             }
