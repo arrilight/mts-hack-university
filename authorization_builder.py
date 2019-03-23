@@ -26,7 +26,7 @@ class AuthBuilder:
 
         if not is_valid_number:
             self.current_state = self.current_state
-            self.title = "Номер не валиден( Попробуй ввести другой"
+            self.title = "Номер должен быть начинаться с +7 или 8. Пожалуйста, попробуйте снова."
             self.suggests = self.suggests
             return
 
@@ -57,5 +57,5 @@ class AuthBuilder:
             return
 
         self.current_state = None
-        self.title = "Не знаю точно что написать"
+        self.title = ""
         self.suggests = None

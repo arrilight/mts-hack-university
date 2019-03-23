@@ -42,7 +42,6 @@ class Authorization:
         with open(self.session_path + self.session_id + '.pickle', 'wb') as f:
             pickle.dump(self.session_storage, f)
 
-
     def load_session_storage(self):
         self.session_storage = {}
         with open(self.session_path + self.session_id + '.pickle', 'rb') as f:

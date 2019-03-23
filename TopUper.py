@@ -63,25 +63,25 @@ class TopUper:
             # number wasn't recognised
             if amount is None:
                 self.current_state = self.current_state
-                self.title = "Я не смогла понять сумму, попробуйте еще раз"
+                self.title = "Я не смогла понять сумму, попробуйте еще раз."
                 self.suggests = self.suggests
                 return
 
             if isinstance(amount, type([])):
                 self.current_state = self.current_state
-                self.title = "Пожалуйста, назовите только одно число"
+                self.title = "Пожалуйста, назовите только одно число."
                 self.suggests = self.suggests
                 return
 
             if isinstance(amount, int) and amount < 0:
                 self.current_state = self.current_state
-                self.title = "Сумма не может быть отрицательным"
+                self.title = "Сумма должна быть неотрицательным числом."
                 self.suggests = self.suggests
                 return
 
             if isinstance(amount, int) and amount > 10000:
                 self.current_state = self.current_state
-                self.title = "Сумма не может быть больше 10000"
+                self.title = "Сумма не может быть больше 10000."
                 self.suggests = self.suggests
                 return
 
