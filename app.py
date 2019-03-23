@@ -37,7 +37,7 @@ def handle_dialog(req, res):
     user_id = req['session']['user_id']
     session_id = req['session']['session_id']
 
-    if req['session']['message_id'] == 1:
+    if req['session']['new']:
         # Это новый пользователь.
         # Инициализируем сессию и поприветствуем его.
 
