@@ -47,7 +47,7 @@ class GlobalHandler:
 
         # вся оставшаяся логика по рекогнишену будет тут
         result = program.process_step()
-        self.generate_response(res, result['title'], self.get_suggests(result['suggests']))
+        self.generate_response(res, result['title'], result['suggests'])
         result['init'] = result['newstate']
         self.session_storage['flow_state'] = result
 
@@ -66,7 +66,7 @@ class GlobalHandler:
             ...
 
         result = program.process_step(req)
-        self.generate_response(res, result['title'], self.get_suggests(result['suggests']))
+        self.generate_response(res, result['title'], result['suggests'])
         result['init'] = result['newstate']
         if result['newstate'] is None:
             self.exit_subflow()
@@ -88,19 +88,6 @@ class GlobalHandler:
 
     def save_user_data(self):
         ...
-
-    def get_suggests(self, suggestions_raw):
-
-        if suggestions_raw is None:
-            return None
-
-        # Выбираем две первые подсказки из массива.
-        suggests = [
-            {'title': suggest, 'hide': True}
-            for suggest in suggestions_raw
-        ]
-
-        return suggests
 
     def exit_subflow(self):
         del self.session_storage['current_subflow']
