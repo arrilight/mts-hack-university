@@ -1,6 +1,6 @@
 flow = {
     "build_plan": {
-        "init": "chose_minutes",
+        "init": "choose_minutes",
         "title": "Добро пожаловать в констурктор тарифа! Давайте создадим тариф специально для вас! Скажите мне, "
                  "сколько минут звонков в месяц вы хотите?",
         'suggests': [
@@ -22,7 +22,7 @@ flow = {
                     }
                 }
             },
-            "chose_data": {
+            "choose_data": {
                 "events": {
                     "next": {
                         "newstate": "choose_sms",
@@ -35,7 +35,7 @@ flow = {
                     }
                 }
             },
-            "chose_sms": {
+            "choose_sms": {
                 "events": {
                     "next": {
                         "newstate": "choose_tv",
@@ -47,7 +47,7 @@ flow = {
                     }
                 }
             },
-            "chose_tv": {
+            "choose_tv": {
                 "events": {
                 }
             }
