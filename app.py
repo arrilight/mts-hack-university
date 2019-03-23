@@ -31,7 +31,6 @@ def hello_world():
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
     session_id = req['session']['session_id']
-    print(session_id)
 
     if req['session']['new']:
         # Это новый пользователь.
