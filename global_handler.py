@@ -1,8 +1,9 @@
 import pickle
 from nltk.stem.snowball import SnowballStemmer
 
-from TopUper import TopUper
+from top_uper import TopUper
 from plan_builder import PlanBuilder
+from  music_handler import MusicHandler
 
 
 class GlobalHandler:
@@ -41,6 +42,9 @@ class GlobalHandler:
         if len(stemmed_tokens.intersection(top_up_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'top_up'
             program = TopUper()
+        if len(stemmed_tokens.intersection(music_stemmed)) > 0:
+            self.session_storage['current_subflow'] = 'handle_music'
+            program = TopUper()
         if program is None:
             self.generate_response(res, 'Я вас не поняла. Попытайтесь объясниться по-другому.')
             return
@@ -63,7 +67,7 @@ class GlobalHandler:
         if name == 'top_up':
             program = TopUper(state)
         if name == 'music':
-            ...
+            program = MusicHandler(state)
 
         result = program.process_step(req)
         self.generate_response(res, result['title'], result['suggests'])

@@ -138,6 +138,41 @@ flow = {
                 }
             }
         }
+    },
+    "handle_music": {
+        "init": "search_music",
+        "title": 'Какую песню найти?',
+        "suggests": [
+
+        ],
+        "state": {
+            "search_music": {
+                "events": {
+                    "next": {
+                        "newstate": "add_music",
+                        "title": "Готово!",
+                        'suggests': [
+                            {"title": "Проиграть", "url": 'https://music.mts.ru/album/6252045/track/45203073?share=1'},
+                            {"title": "Добавить"},
+                            {"Спасибо!"}
+                        ]
+                    },
+                }
+            },
+            "add_music": {
+                "events": {
+                    "next": {
+                        "newstate": "finish",
+                        "title": "",
+                        'suggests': []
+                    },
+                }
+            },
+            "finish": {
+                "events": {}
+            }
+
+        }
     }
 
 }
