@@ -116,13 +116,13 @@ class PlanBuilder:
 
         if isinstance(minutes, int) and minutes < 0:
             self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть отрицательным"
+            self.title = "Количество минут не может быть отрицательным"
             self.suggests = self.suggests
             return
 
         if isinstance(minutes, int) and minutes > 10000:
             self.current_state = self.current_state
-            self.title = "Количество гигабайт не может быть больше 10000"
+            self.title = "Количество минут не может быть больше 10000"
             self.suggests = self.suggests
             return
 

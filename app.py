@@ -5,6 +5,7 @@ from flask import Flask, request
 import json
 import pickle
 import plan_builder
+from global_handler import GlobalHandler
 
 app = Flask(__name__)
 
@@ -58,53 +59,8 @@ def handle_dialog(req, res):
         return
 
     # Обрабатываем ответ пользователя.
-
-    with open(session_path + session_id + '.pickle', 'rb') as f:
-        sessionStorage1 = pickle.load(f)
-        result = {}
-
-        if req['request']['original_utterance'].lower() in ['собрать тариф']:
-            pb = plan_builder.PlanBuilder()
-            result = pb.process_step()
-            sessionStorage1['current_flow'] = 'build_plan'
-
-        # if sessionStorage1['current_flow'] is None:
-        #     pb = plan_builder.PlanBuilder()
-        #     result = pb.process_step()
-        #     sessionStorage1['current_flow'] = 'build_plan'
-
-        elif 'current_flow' in sessionStorage1.keys():
-            state = sessionStorage1['flow_step']
-            pb = plan_builder.PlanBuilder(state)
-            result = pb.process_step(req['request'])
-
-        res['response']['text'] = result['title']
-        res['response']['buttons'] = get_suggests(result['suggests'])
-        result['init'] = result['newstate']
-        sessionStorage1['flow_step'] = result
-
-        with open(session_path + session_id + '.pickle', 'wb') as f:
-            pickle.dump(sessionStorage1, f)
-
-        return
-
-
-def get_suggests(session_raw):
-
-    if session_raw is None:
-        return None
-
-    # Выбираем две первые подсказки из массива.
-    suggests = [
-        {'title': suggest, 'hide': True}
-        for suggest in session_raw
-    ]
-
-    # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
-    # session['suggests'] = session['suggests'][1:]
-    # sessionStorage[user_id] = session
-
-    return suggests
+    handler = GlobalHandler(session_id)
+    handler.handle_request(req['request'], res)
 
 
 if __name__ == "__main__":
