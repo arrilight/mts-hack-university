@@ -32,16 +32,9 @@ class MusicHandler:
     def add_music(self, req):
         response = req['command']
 
-        if response == 'Добавить':
+        if response == 'Добавить' or response == 'Спасибо!':
             new_flow = self.flow["state"]['add_music']['events']['next']
             self.current_state = None
-            self.title = new_flow["title"]
-            self.suggests = new_flow["suggests"]
-            return
-
-        if response == 'Спасибо!':
-            new_flow = self.flow["state"]['finish']['events']['next']
-            self.current_state = new_flow["newstate"]
             self.title = new_flow["title"]
             self.suggests = new_flow["suggests"]
             return
