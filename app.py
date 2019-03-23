@@ -91,6 +91,9 @@ def handle_dialog(req, res):
 
 def get_suggests(session_raw):
 
+    if session_raw is None:
+        return None
+
     # Выбираем две первые подсказки из массива.
     suggests = [
         {'title': suggest, 'hide': True}
