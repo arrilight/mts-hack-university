@@ -6,6 +6,11 @@ app = Flask(__name__)
 sessionStorage = {}
 
 
+@app.route('/', methods=['GET'])
+def test():
+    return 'lol'
+
+
 @app.route('/', methods=['POST'])
 def hello_world():
 
@@ -41,7 +46,8 @@ def handle_dialog(req, res):
             ]
         }
 
-        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Что ты хочешь сделать'
+        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Чтобы мы могли свободно общаться, ' \
+                                  'я должен знать что ты это ты. Для этого введи свой номер телефона)'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
@@ -69,12 +75,12 @@ def get_suggests(user_id):
     # Выбираем две первые подсказки из массива.
     suggests = [
         {'title': suggest, 'hide': True}
-        for suggest in session['suggests'][:2]
+        for suggest in session['suggests']
     ]
 
     # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
-    session['suggests'] = session['suggests'][1:]
-    sessionStorage[user_id] = session
+    # session['suggests'] = session['suggests'][1:]
+    # sessionStorage[user_id] = session
 
     return suggests
 
