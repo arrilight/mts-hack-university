@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 flow = {
     "build_plan": {
         "init": "chose_minutes",
