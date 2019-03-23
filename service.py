@@ -36,6 +36,4 @@ def check_authorization(req):
 
 
 if __name__ == "__main__":
-    context = ('cert.crt', 'key.key')
-    # app.run(host='0.0.0.0', port=80, ssl_context=context, threaded=True, debug=True)
     app.run(host='0.0.0.0', port=8000)

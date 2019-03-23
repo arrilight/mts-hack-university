@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from flask import Flask, request
 import json
 import pickle
+
+from authorization import Authorization
 from global_handler import GlobalHandler
 
 app = Flask(__name__)
@@ -50,14 +52,20 @@ def handle_dialog(req, res):
             'current_flow': None
         }
 
-        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Чтобы мы могли свободно общаться, ' \
-                                  'я должен знать что ты это ты. Для этого введи свой номер телефона)'
+
         with open(session_path + session_id + '.pickle', 'wb') as f:
             pickle.dump(sessionStorage, f)
+            f.close()
+        auth = Authorization(session_id)
+        auth.authorize(req['request'], res)
 
         return
 
     # Обрабатываем ответ пользователя.
+    auth = Authorization(session_id)
+    if not auth.is_authorized():
+        auth.authorize(req['request'], res)
+        return
     handler = GlobalHandler(session_id)
     handler.handle_request(req['request'], res)
 

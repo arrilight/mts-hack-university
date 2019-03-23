@@ -32,10 +32,13 @@ class GlobalHandler:
         if 'пополнить' in tokens:
             self.session_storage['current_subflow'] = 'top_up'
             program = TopUper()
+        if program is None:
+            self.generate_response(res, 'Я вас не поняла. Попытайтесь объясниться по-другому.')
+            return
+
         # вся оставшаяся логика по рекогнишену будет тут
         result = program.process_step()
-        res['response']['text'] = result['title']
-        res['response']['buttons'] = self.get_suggests(result['suggests'])
+        self.generate_response(res, result['title'], self.get_suggests(result['suggests']))
         result['init'] = result['newstate']
         self.session_storage['flow_state'] = result
 
@@ -54,12 +57,11 @@ class GlobalHandler:
             ...
 
         result = program.process_step(req)
-        res['response']['text'] = result['title']
-        res['response']['buttons'] = self.get_suggests(result['suggests'])
+        self.generate_response(res, result['title'], self.get_suggests(result['suggests']))
         result['init'] = result['newstate']
         if result['newstate'] is None:
             self.exit_subflow()
-            res['response']['text'] = res['response']['text'] + '\nКакие у вас ещё есть ко мне вопросы?'
+            self.generate_response(res, res['response']['text'] + '\nКакие у вас ещё есть ко мне вопросы?')
 
         self.session_storage['flow_state'] = result
 
@@ -101,3 +103,8 @@ class GlobalHandler:
             res['response']['text'] = 'Хорошо, останавливаюсь. Чем ещё могу вам помочь?'
             return True
         return False
+
+    @staticmethod
+    def generate_response(res, text, buttons = None):
+        res['response']['text'] = text
+        res['response']['buttons'] = buttons
