@@ -40,6 +40,8 @@ class GlobalHandler:
         self.session_storage['flow_state'] = result
 
     def handle_specific_request(self, req, res):
+        if self.check_stop_word(req, res):
+            return
         program = None
         name = self.session_storage['current_subflow']
         state = self.session_storage['flow_state']
@@ -55,6 +57,10 @@ class GlobalHandler:
         res['response']['text'] = result['title']
         res['response']['buttons'] = self.get_suggests(result['suggests'])
         result['init'] = result['newstate']
+        if result['newstate'] is None:
+            self.exit_subflow()
+            res['response']['text'] = res['response']['text'] + '\nКакие у вас ещё есть ко мне вопросы?'
+
         self.session_storage['flow_state'] = result
 
     def load_session_storage(self):
@@ -84,3 +90,14 @@ class GlobalHandler:
         ]
 
         return suggests
+
+    def exit_subflow(self):
+        del self.session_storage['current_subflow']
+        del self.session_storage['flow_state']
+
+    def check_stop_word(self, req, res):
+        if 'остановись' in req['nlu']['tokens']:
+            self.exit_subflow()
+            res['response']['text'] = 'Хорошо, останавливаюсь. Чем ещё могу вам помочь?'
+            return True
+        return False
