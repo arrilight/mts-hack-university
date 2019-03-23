@@ -40,5 +40,5 @@ class MusicHandler:
             return
 
         self.current_state = self.current_state
-        self.title = "Я не совсем поняла. Выберете один из предложенных вариантов."
+        self.title = "Я не совсем поняла. Выбери один из предложенных вариантов."
         self.suggests = self.suggests
