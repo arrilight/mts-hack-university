@@ -2,10 +2,14 @@ from __future__ import unicode_literals
 
 from flask import Flask, request
 import json
+import pickle
+import plan_builder
 
 app = Flask(__name__)
 
 sessionStorage = {}
+
+session_path = './sessions/'
 
 
 @app.route('/', methods=['POST'])
@@ -42,34 +46,53 @@ def handle_dialog(req, res):
                 "Собрать тариф",
                 "Пополнить счет",
                 "Все что вы хотите!",
-            ]
+            ],
+            'current_flow': None
         }
 
         res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Чтобы мы могли свободно общаться, ' \
                                   'я должен знать что ты это ты. Для этого введи свой номер телефона)'
-        res['response']['buttons'] = get_suggests(user_id)
+        with open(session_path + session_id + '.pickle', 'wb') as f:
+            pickle.dump(sessionStorage, f)
+
         return
 
     # Обрабатываем ответ пользователя.
-    if req['request']['original_utterance'].lower() in [
-        'ладно',
-        'куплю',
-        'покупаю',
-        'хорошо',
-    ]:
-        # Пользователь согласился, прощаемся.
-        res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
+
+    with open(session_path + session_id + '.pickle', 'rb') as f:
+        sessionStorage1 = pickle.load(f)
+        result = {}
+
+        print(req['request']['original_utterance'].lower())
+
+        if req['request']['original_utterance'].lower() in ['собрать тариф']:
+            pb = plan_builder.PlanBuilder()
+            result = pb.process_step()
+            sessionStorage1['current_flow'] = 'build_plan'
+
+        # if sessionStorage1['current_flow'] is None:
+        #     pb = plan_builder.PlanBuilder()
+        #     result = pb.process_step()
+        #     sessionStorage1['current_flow'] = 'build_plan'
+
+        elif 'current_flow' in sessionStorage1.keys():
+            state = sessionStorage1['flow_step']
+            pb = plan_builder.PlanBuilder(state)
+            result = pb.process_step(req['request'])
+
+        res['response']['text'] = result['title']
+        res['response']['buttons'] = result['suggests']
+        result['init'] = result['newstate']
+        sessionStorage1['flow_step'] = result
+
+        with open(session_path + session_id + '.pickle', 'wb') as f:
+            pickle.dump(sessionStorage1, f)
+
         return
 
-    # Если нет, то убеждаем его купить слона!
-    res['response']['text'] = 'Все говорят "%s", а ты купи слона!' % (
-        req['request']['original_utterance']
-    )
-    res['response']['buttons'] = get_suggests(user_id)
 
-
-def get_suggests(user_id):
-    session = sessionStorage[user_id]
+def get_suggests(session_id):
+    session = sessionStorage[session_id]
 
     # Выбираем две первые подсказки из массива.
     suggests = [

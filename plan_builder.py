@@ -55,7 +55,7 @@ class PlanBuilder:
         self.title = new_flow["title"]
         self.suggests = new_flow["suggests"]
 
-    def chose_data(self, req):
+    def choose_data(self, req):
         entities = req["nlu"]["entities"]
         minutes = None
         for entity in entities:
@@ -202,6 +202,14 @@ req1 = {
         },
         {
           "tokens": {
+            "start": 5,
+            "end": 6
+          },
+          "type": "YANDEX.NUMBER",
+          "value": 16
+        },
+        {
+          "tokens": {
             "start": 6,
             "end": 8
           },
@@ -214,6 +222,10 @@ req1 = {
       ]
     }
 }
+
+resp = pb.process_step()
+resp = pb.process_step(req1)
+print()
 
 
 
