@@ -1,7 +1,5 @@
 from flask import Flask, request
 import json
-import logging
-import ssl
 
 app = Flask(__name__)
 
@@ -10,7 +8,6 @@ sessionStorage = {}
 
 @app.route('/', methods=['POST'])
 def hello_world():
-    logging.info('Request: %r', request.json)
 
     response = {
         "version": request.json['version'],
@@ -21,8 +18,6 @@ def hello_world():
     }
 
     handle_dialog(request.json, response)
-
-    logging.info('Response: %r', response)
 
     return json.dumps(
         response,
@@ -40,13 +35,13 @@ def handle_dialog(req, res):
 
         sessionStorage[user_id] = {
             'suggests': [
-                "Не хочу.",
-                "Не буду.",
-                "Отстань!",
+                "Собрать тариф",
+                "Пополнить счет",
+                "Все что вы хотите!",
             ]
         }
 
-        res['response']['text'] = 'Привет! Купи слона!'
+        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Что ты хочешь сделать'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
@@ -81,19 +76,10 @@ def get_suggests(user_id):
     session['suggests'] = session['suggests'][1:]
     sessionStorage[user_id] = session
 
-    # Если осталась только одна подсказка, предлагаем подсказку
-    # со ссылкой на Яндекс.Маркет.
-    if len(suggests) < 2:
-        suggests.append({
-            "title": "Ладно",
-            "url": "https://market.yandex.ru/search?text=слон",
-            "hide": True
-        })
-
     return suggests
 
 
 if __name__ == "__main__":
     context = ('cert.crt', 'key.key')
-    #app.run(host='0.0.0.0', port=80, ssl_context=context, threaded=True, debug=True)
+    # app.run(host='0.0.0.0', port=80, ssl_context=context, threaded=True, debug=True)
     app.run(host='0.0.0.0', port=80)
