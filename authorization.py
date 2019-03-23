@@ -24,12 +24,10 @@ class Authorization:
     def authorize(self, req, res):
         result = None
         if 'auth_state' not in self.session_storage.keys():
-            print('1')
             self.init_authorization()
             auth_builder = AuthBuilder(self.session_id)
             result = auth_builder.process_step()
         elif self.session_storage['auth_status'] == 'in_progress':
-            print('2')
             auth_builder = AuthBuilder(self.session_id, self.session_storage['auth_state'])
             result = auth_builder.process_step(req)
         self.generate_response(res, result['title'])

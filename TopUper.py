@@ -35,7 +35,6 @@ class TopUper:
 
         if response == 'Другой номер':
             new_flow = self.flow["state"][self.current_state]["events"]['enter_other_number']
-            print(new_flow)
             self.current_state = new_flow["newstate"]
             self.title = new_flow["title"]
             self.suggests = None
