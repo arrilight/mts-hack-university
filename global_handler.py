@@ -1,4 +1,5 @@
 import pickle
+from nltk.stem.snowball import SnowballStemmer
 
 from TopUper import TopUper
 from plan_builder import PlanBuilder
@@ -24,12 +25,20 @@ class GlobalHandler:
     def handle_generic_request(self, req, res):
         original_utterance = req['original_utterance']
         tokens = req['nlu']['tokens']
+
+        music_stemmed = {"музык", "песн", "мелод", "игра", "проигра", "сыгра", "включ", "добав"}
+        plan_stemmed = {"тариф", "план"}
+        top_up_stemmed = {"счет", "баланс", "закинь", "кинь", "пополн", "полож"}
+
+        stemmer = SnowballStemmer("russian")
+        stemmed_tokens = set([stemmer.stem(word) for word in tokens])
+
         program = None
         flow_state = None
-        if 'тариф' in tokens:
+        if len(stemmed_tokens.intersection(plan_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'plan_builder'
             program = PlanBuilder()
-        if 'пополнить' in tokens:
+        if len(stemmed_tokens.intersection(top_up_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'top_up'
             program = TopUper()
         if program is None:
