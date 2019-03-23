@@ -28,6 +28,8 @@ def hello_world():
 
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
+    session_id = req['session']['session_id']
+    print(session_id)
 
     if req['session']['new']:
         # Это новый пользователь.
@@ -41,7 +43,7 @@ def handle_dialog(req, res):
             ]
         }
 
-        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Что ты хочешь сделать'
+        res['response']['text'] = 'Привет! Я твой новый помощник в мире МТС! Что ты хочешь сделать?'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
