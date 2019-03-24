@@ -25,7 +25,7 @@ class TopUper:
 
         response = req['command']
 
-        if response == 'Мне':
+        if 'мне' in req['nlu']['tokens']:
             reciever = my_tel_number
             new_flow = self.flow["state"][self.current_state]["events"]["next"]
             self.current_state = new_flow["newstate"]
@@ -33,7 +33,7 @@ class TopUper:
             self.suggests = new_flow["suggests"]
             return
 
-        if response == 'Другой номер':
+        if response == 'другой номер':
             new_flow = self.flow["state"][self.current_state]["events"]['enter_other_number']
             self.current_state = new_flow["newstate"]
             self.title = new_flow["title"]
@@ -93,13 +93,13 @@ class TopUper:
     def choose_source(self, req):
         response = req['command']
 
-        if response == 'Моя карта МТС Банка':
+        if response == 'моя карта МТС Банка':
             self.current_state = None
             self.title = "Пополняю счет с твоей карты МТС Банка"
             self.suggests = None
             return
 
-        if response == 'С мобильного баланса':
+        if response == 'с мобильного баланса':
             self.current_state = None
             self.title = "Пополняю счет с твоего мобильного баланса"
             self.suggests = None
