@@ -141,7 +141,7 @@ class PlanBuilder:
             # save positive response
 
             self.current_state = None
-            self.title = "Твой тариф создан создан!"
+            self.title = "Твой тариф создан!"
             self.suggests = {"title": "Посмотреть"}
             return
 

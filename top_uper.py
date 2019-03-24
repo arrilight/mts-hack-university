@@ -101,7 +101,7 @@ class TopUper:
 
         if response == 'С мобильного баланса':
             self.current_state = None
-            self.title = "Пополняю счет с вашего мобильного баланса"
+            self.title = "Пополняю счет с твоего мобильного баланса"
             self.suggests = None
             return
 

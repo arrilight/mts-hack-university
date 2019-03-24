@@ -42,15 +42,21 @@ class GlobalHandler:
         if len(stemmed_tokens.intersection(top_up_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'top_up'
             program = TopUper()
+            # if len(stemmed_tokens.intersection({'', ''})) > 0:
+              #  program.process_step()
         if len(stemmed_tokens.intersection(music_stemmed)) > 0:
             self.session_storage['current_subflow'] = 'handle_music'
             program = MusicHandler()
         if program is None:
-            self.generate_response(res, 'Я тебя не поняла. Попытайтя объясниться по-другому.')
+            self.generate_response(res, 'Я тебя не поняла. Попытайся объясниться по-другому.')
             return
 
         # вся оставшаяся логика по рекогнишену будет тут
         result = program.process_step()
+        if isinstance(program, type(TopUper)) and len(stemmed_tokens.intersection({'', ''})) > 0:
+            result['init'] = result['newstate']
+            program = TopUper(result)
+            result = program.process_step(req)
         self.generate_response(res, result['title'], result['suggests'])
         result['init'] = result['newstate']
         self.session_storage['flow_state'] = result

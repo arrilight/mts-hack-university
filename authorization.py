@@ -35,7 +35,7 @@ class Authorization:
         self.session_storage['auth_state'] = result
         if result['newstate'] is None:
             self.finish_authorization()
-            self.generate_response(res, 'Авторизация прошла успешно!')
+            self.generate_response(res, 'Авторизация прошла успешно! Чем могу помочь?')
         self.save_session_storage()
 
     def save_session_storage(self):
