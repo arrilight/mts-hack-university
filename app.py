@@ -52,7 +52,6 @@ def handle_dialog(req, res):
             'current_flow': None
         }
 
-
         with open(session_path + session_id + '.pickle', 'wb') as f:
             pickle.dump(sessionStorage, f)
             f.close()
@@ -61,7 +60,7 @@ def handle_dialog(req, res):
 
         return
 
-    if "расскажи о себе" in req['nlu']['tokens']:
+    if "расскажи о себе" in req['request']['nlu']['tokens']:
         res['response']['text'] = 'Я - новый умный помощник от команды "3 фронтендера и я". ' \
                                   'Пока что я могу выполнять такие функции:'
         res['response']['buttons'] = [
@@ -70,7 +69,7 @@ def handle_dialog(req, res):
                 "Найти музыку",
             ]
 
-        return 
+        return
 
     # Обрабатываем ответ пользователя.
     auth = Authorization(session_id)
