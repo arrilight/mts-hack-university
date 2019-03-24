@@ -10,7 +10,7 @@ userToSMS = {}
 @app.route('/sms_send', methods=['POST'])
 def send_sms():
     # Вклюдчить генерацию возможно
-    userToSMS[request.json['session_id']] = ["я", "ем", "мороженное"]
+    userToSMS[request.json['session_id']] = ["я", "ем", "мороженое"]
     return 'Sms was sent', 200
 
 
