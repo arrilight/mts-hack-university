@@ -28,13 +28,13 @@ class PlanBuilder:
         # number wasn't recognised
         if minutes is None:
             self.current_state = self.current_state
-            self.title = "Я не смогла понять сколько минут вам нужно, попробуйте еще раз"
+            self.title = "Я не смогла понять сколько минут тебе нужно, попробуй еще раз"
             self.suggests = self.suggests
             return
 
         if isinstance(minutes, type([])):
             self.current_state = self.current_state
-            self.title = "Пожалуйста, назовите только одно число"
+            self.title = "Пожалуйста, назови только одно число"
             self.suggests = self.suggests
             return
 
@@ -66,13 +66,13 @@ class PlanBuilder:
         # number wasn't recognised
         if minutes is None:
             self.current_state = self.current_state
-            self.title = "Я не смогла понять сколько гигабайт интернета вам нужно, попробуйте еще раз"
+            self.title = "Я не смогла понять сколько гигабайт интернета тебе нужно, попробуй еще раз"
             self.suggests = self.suggests
             return
 
         if isinstance(minutes, type([])):
             self.current_state = self.current_state
-            self.title = "Пожалуйста, назовите только одно число"
+            self.title = "Пожалуйста, назови только одно число"
             self.suggests = self.suggests
             return
 
@@ -104,13 +104,13 @@ class PlanBuilder:
         # number wasn't recognised
         if minutes is None:
             self.current_state = self.current_state
-            self.title = "Я не смогла понять сколько смс вам нужно, попробуйте еще раз"
+            self.title = "Я не смогла понять сколько смс тебе нужно, попробуйте еще раз"
             self.suggests = self.suggests
             return
 
         if isinstance(minutes, type([])):
             self.current_state = self.current_state
-            self.title = "Пожалуйста, назовите только одно число"
+            self.title = "Пожалуйста, назови только одно число"
             self.suggests = self.suggests
             return
 
@@ -141,19 +141,19 @@ class PlanBuilder:
             # save positive response
 
             self.current_state = None
-            self.title = "Ваш тариф создан!"
-            self.suggests = None
+            self.title = "Твой тариф создан создан!"
+            self.suggests = {"title": "Посмотреть"}
             return
 
         if "нет" in tokens:
             # save negative response
             self.current_state = None
-            self.title = "Ваш тариф создан!"
-            self.suggests = None
+            self.title = "Твой тариф создан!"
+            self.suggests = {"title": "Посмотреть"}
             return
 
         self.current_state = self.current_state
-        self.title = "Я не совсем поняла. Ответь да или нет."
+        self.title = "Я не совсем поняла. Ответь «‎да» или «‎нет»."
         self.suggests = self.suggests
 
 

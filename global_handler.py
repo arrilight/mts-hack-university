@@ -46,7 +46,7 @@ class GlobalHandler:
             self.session_storage['current_subflow'] = 'handle_music'
             program = MusicHandler()
         if program is None:
-            self.generate_response(res, 'Я вас не поняла. Попытайтесь объясниться по-другому.')
+            self.generate_response(res, 'Я тебя не поняла. Попытайтя объясниться по-другому.')
             return
 
         # вся оставшаяся логика по рекогнишену будет тут
@@ -73,7 +73,7 @@ class GlobalHandler:
         result['init'] = result['newstate']
         if result['newstate'] is None:
             self.exit_subflow()
-            self.generate_response(res, res['response']['text'] + '\nКакие у вас ещё есть ко мне вопросы?')
+            self.generate_response(res, res['response']['text'] + '\nКакие у тебя ещё есть ко мне вопросы?')
 
         self.session_storage['flow_state'] = result
 
@@ -99,7 +99,7 @@ class GlobalHandler:
     def check_stop_word(self, req, res):
         if 'остановись' in req['nlu']['tokens']:
             self.exit_subflow()
-            res['response']['text'] = 'Хорошо, останавливаюсь. Чем ещё могу вам помочь?'
+            res['response']['text'] = 'Хорошо, останавливаюсь. Чем ещё тебе помочь?'
             return True
         return False
 

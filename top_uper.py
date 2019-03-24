@@ -63,13 +63,13 @@ class TopUper:
             # number wasn't recognised
             if amount is None:
                 self.current_state = self.current_state
-                self.title = "Я не смогла понять сумму, попробуйте еще раз."
+                self.title = "Я не смогла понять сумму, попробуй еще раз."
                 self.suggests = self.suggests
                 return
 
             if isinstance(amount, type([])):
                 self.current_state = self.current_state
-                self.title = "Пожалуйста, назовите только одно число."
+                self.title = "Пожалуйста, назови только одно число."
                 self.suggests = self.suggests
                 return
 
@@ -93,18 +93,18 @@ class TopUper:
     def choose_source(self, req):
         response = req['command']
 
-        if response == 'Моя карта МТС':
+        if response == 'Моя карта МТС Банка':
             self.current_state = None
-            self.title = "Пополняю счет с вашей карты"
+            self.title = "Пополняю счет с твоей карты МТС Банка"
             self.suggests = None
             return
 
-        if response == 'Мой мобильный баланс':
+        if response == 'С мобильного баланса':
             self.current_state = None
             self.title = "Пополняю счет с вашего мобильного баланса"
             self.suggests = None
             return
 
         self.current_state = self.current_state
-        self.title = "Я не совсем поняла. Выберете валидный способ оплаты."
+        self.title = "Я не совсем поняла. Выбери валидный способ оплаты."
         self.suggests = self.suggests
