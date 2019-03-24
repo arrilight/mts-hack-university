@@ -54,6 +54,7 @@ class GlobalHandler:
         # вся оставшаяся логика по рекогнишену будет тут
         result = program.process_step()
         if isinstance(program, type(TopUper)) and len(stemmed_tokens.intersection({'мне', 'мо'})) > 0:
+            print('skip number')
             result['init'] = result['newstate']
             program = TopUper(result)
             result = program.process_step(req)
