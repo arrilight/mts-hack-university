@@ -70,6 +70,8 @@ def handle_dialog(req, res):
                 "Найти музыку",
             ]
 
+        return 
+
     # Обрабатываем ответ пользователя.
     auth = Authorization(session_id)
     if not auth.is_authorized():
