@@ -61,6 +61,15 @@ def handle_dialog(req, res):
 
         return
 
+    if "расскажи о себе" in req['nlu']['tokens']:
+        res['response']['text'] = 'Я - новый умный помощник от команды "3 фронтендера и я". ' \
+                                  'Пока что я могу выполнять такие функции:'
+        res['response']['buttons'] = [
+                "Собрать тариф",
+                "Пополнить счет",
+                "Найти музыку",
+            ]
+
     # Обрабатываем ответ пользователя.
     auth = Authorization(session_id)
     if not auth.is_authorized():
