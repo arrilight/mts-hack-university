@@ -25,7 +25,7 @@ class TopUper:
 
         response = req['command']
 
-        if 'мне' in req['nlu']['tokens']:
+        if 'мне' in req['nlu']['tokens'] or 'мой' in req['nlu']['tokens']:
             reciever = my_tel_number
             new_flow = self.flow["state"][self.current_state]["events"]["next"]
             self.current_state = new_flow["newstate"]
