@@ -60,7 +60,7 @@ def handle_dialog(req, res):
 
         return
 
-    if "расскажи о себе" in req['request']['nlu']['tokens']:
+    if "расскажи" in req['request']['nlu']['tokens']:
         res['response']['text'] = 'Я - новый умный помощник от команды "3 фронтендера и я". ' \
                                   'Пока что я могу выполнять такие функции:'
         res['response']['buttons'] = [
